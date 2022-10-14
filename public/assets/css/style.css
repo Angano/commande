@@ -1,0 +1,70 @@
+/* Mise en page footer*/
+.footer :nth-child(1n+2){
+    color:#bd9700;
+}
+
+/* Gestion des fleches pour le tri */
+
+.btn-order{
+    display: none;
+}
+#tri span a{
+    text-decoration: none;
+}
+.active-url{
+    color:white;
+    font-weight: 600;
+    border-bottom: solid 2px black;
+    border-radius: 3px;
+}
+
+.nav-item:hover{
+    font-weight: 600;
+}
+.nav-item:hover a{
+    color:white;
+}
+
+.active-url a{
+    color:white;
+}
+
+h3 , h4{
+    display: inline-block;
+    border-bottom: solid 3px #0d6efd;
+    margin-top: 1.5rem;
+}
+
+
+#tata{
+    position:relative;
+
+}
+
+#toto{
+    position:absolute;
+    z-index: 20;
+    width: 100%;
+    background-color: white;
+    padding: 0.5rem;
+    text-align: center;
+}
+.fa-solid{
+    font-size:1.2rem;
+
+}
+
+.alternate_color:nth-child(even), .societe:nth-child(even){
+    background-color: #eff0f1;
+}
+.alternate_color:nth-child(odd), .societe:nth-child(odd){
+    background-color: #c8d2db17;
+
+}
+.row{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    /* font-size: 14px; */
+}
