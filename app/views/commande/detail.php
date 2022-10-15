@@ -12,8 +12,8 @@ ob_start();
     <div class="card  col-12 col-md-5 offset-md-1 ms-auto" >
         <p><b>Réf: </b><?=$datas['commande']['ref']?> </p>
         <p><b><?=$datas['commande']['nom']?></b> </p>
-        <p><?=$datas['commande']['address']?> <?=$datas['commande']['zip']?> </p>
-        <p><b><?=$datas['commande']['town']?> </b></p>
+        <p><?=$datas['commande']['address']?>  </p>
+        <p><?=$datas['commande']['zip']?> <b><?=$datas['commande']['town']?> </b></p>
         <p><b>Status: </b><?php 
                     switch($datas['commande']['fk_statut']){
                         case 0:
