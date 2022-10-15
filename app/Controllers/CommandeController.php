@@ -66,7 +66,6 @@ class Commande extends Controller{
         }    
         
         // Sort the data with wek ascending order, add $mar as the last parameter, to sort by the common key
-        
         array_multisort($wek, SORT_ASC, $commandes);
 
         //////////////////////////////////////////////////////////////

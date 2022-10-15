@@ -9,7 +9,8 @@ define('APPROOT',dirname(dirname(__FILE__)));
 // Racine des urls
 
 
-define('URLROOT','http://localhost/commande');
+
+define('URLROOT',$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/commande');
 define('URLREF','commande');
 
 
