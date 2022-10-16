@@ -2,8 +2,8 @@
 $titlePage = 'Document';
 ob_start();
 ?>
-<div class="row">
-        <div class="col-md-10 mx-auto">
+<div class="row py-1 pb-3">
+        <div class="col-md-11 mx-auto">
             <h3>Listes des commandes</h3>
         </div>
 </div>

@@ -4,7 +4,7 @@ ob_start();?>
 
 
 
-<div class="row">
+<div class="row py-3">
         <div class="col-md-11 mx-auto">
             <?php 
                 if(isset($datas['todo']) && strlen($datas['todo'])>1){?>
@@ -18,7 +18,7 @@ ob_start();?>
             
         </div>
 </div>
-<div class="row">
+<div class="row py-3">
     <div class="card col-md-11 mx-auto mt-3">
         <p><b>Commande N°: </b> <a href="<?=URLROOT?>/commande/detail/<?= $datas['rowid']?>"><?=$datas['ref'] ?></a></p>
         <p><b><?=$datas['nom'] ?></b> </p>

@@ -3,7 +3,7 @@ $titlePage = 'Document';
 ob_start();
 ?>
 
-<div class="row">
+<div class="row py-3 ">
         <div class="col-md-11 mx-auto">
             <h3>Détail d'une commande</h3>
         </div>
@@ -97,7 +97,7 @@ ob_start();
 
     </div>
 
-    <div class="row">
+    <div class="row pb-3">
             <div class="col-md-11 mx-auto mt-3">
                 <h4>Egalement pour ce client</h4>
             </div>
@@ -182,7 +182,7 @@ ob_start();
   
     </div>
 </form>
-<div class="row mt-3">
+<div class="row mt-3 py-3">
     <div class="col-md-11 mx-auto">
         <h4>Livraison en attente dans un rayon de <?= $datas['limite']?> km pour d'autre client</h4>
     </div>
