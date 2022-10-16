@@ -64,20 +64,47 @@ foreach($datas['commandes'] as $commande){
             
             
     </div>
-   
-    <?php }?>
- <div class="row">
-        <div class="col-md-12 mb-5 text-center">
-            <?php
-            $url = '';
-          
-                for ($i=10; $i < intval($datas['count']); $i= $i+30) { 
-                    $url = $url . '<a href="'.URLROOT.'/commande/index/?limit='.'30'.'&offset='.$i.'">'.($i).'</a>&nbsp;';
-                }
-            ?>
-            <?= $url ?>
-        </div>
-    </div><?php
-    $content = ob_get_clean();
+   <?php } ?>
 
-require('../app/views/base.php');
+<div class="row">
+    <div class="col-md-12 mb-5 margin-auto">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+            <?php 
+                if(intval($datas['shorTable']['offset'])>intval($datas['shorTable']['limit'])){ ?>
+                
+                    <li class="page-item"><a class="page-link" href="
+                    <?=  URLROOT.'/commande/index/?limit='.'30'.'&offset='.(intval($datas['shorTable']['offset'])-intval($datas['shorTable']['limit'])).'"' ?>
+                    ">Précédent</a></li><?php 
+                } ?>
+                <?php
+              
+                    $url = '';
+                
+                        for ($i=10; $i<intval($datas['count']); $i= $i+30){ 
+                                $url = $url . '<li class="page-item">';
+
+                                if($datas['shorTable']['offset']==$i){
+                                   
+                                    $url = $url . '<a class="page-link active" >'.($i).'</a>';
+
+                                }else{
+                                    $url = $url . '<a class="page-link" href="'.URLROOT.'/commande/index/?limit='.'30'.'&offset='.$i.'">'.($i).'</a>';
+                                }
+                                $url = $url."</li>";
+                        }
+                    ?>
+                    <?= $url ?>
+                    <?php if(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit'])<intval($datas['count'])){ ?>
+                                        <li class="page-item"><a class="page-link" href="<?=  URLROOT.'/commande/index/?limit='.'30'.'&offset='.(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit'])).'"' ?>">Suivant</a></li>
+
+                    <?php }
+                    ?>
+            </ul>
+        </nav>
+    </div>
+</div>        
+<?php
+    $content = ob_get_clean();
+    require('../app/views/base.php');

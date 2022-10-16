@@ -8,7 +8,8 @@ class Commande extends Controller{
         $count = $model->countCommande();
         $datas = array(
             'commandes'=>$commandes,
-            'count'=>$count['count']
+            'count'=>$count['count'],
+            'shorTable'=>$shortTable
         );
         $this->view('commande/commandes',$datas);
 
