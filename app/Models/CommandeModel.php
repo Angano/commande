@@ -6,9 +6,9 @@
           
          
         }
-        public function getCommandes($datas = ['limit'=>'5','offset'=>'0']){
+        public function getCommandes($datas = ['limit'=>'30','offset'=>'0']){
             if(!isset($datas['limit'])){
-                $datas = ['limit'=>'5','offset'=>'0'];
+                $datas = ['limit'=>'30','offset'=>'0'];
             }
             $sql =  " SELECT DISTINCT llx_commande.rowid, llx_commande.fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut, todo, 

@@ -13,7 +13,7 @@ class Commande extends Controller{
         }
         if(!isset($shorTable['limit']) || preg_match('/^[1-9][0-9]{0,}$/',$shorTable['limit'])===0){
 
-          $shorTable['limit'] = 5 ;
+          $shorTable['limit'] = 30 ;
         }
         if(!isset($shorTable['offset']) || preg_match('/^[1-9][0-9]{0,}$/',$shorTable['offset'])===0){
 
@@ -25,16 +25,39 @@ class Commande extends Controller{
         }
     
         // fin de vérification
+
+       
       
 
         $model = $this->model('CommandeModel');
         $commandes = $model->getCommandes($shorTable);
         $count = $model->countCommande($shorTable['soc']);
+
         $datas = array(
-            'commandes'=>$commandes,
-            'count'=>$count['count'],
-            'shorTable'=>$shorTable
-        );
+                    'commandes'=>$commandes,
+                    'count'=>$count['count'],
+                    'shorTable'=>$shorTable
+                );
+
+        // datas for search form
+        if(isset($shorTable['soc']) && !is_null($shorTable['soc'])){
+            
+            // on récupère le nom l'adresse du client recherché par le formulaire
+            $datas['dataForForm'] = [
+                'rowid'=>$commandes[0]['fk_soc'],
+                'nom'=> $commandes[0]['nom']
+                
+                ];
+        }else{
+            $datas['dataForForm'] = [
+                'rowid'=>'',
+                'nom'=> ''
+                
+                ];
+        }
+
+
+        
         $this->view('commande/commandes',$datas);
 
     }

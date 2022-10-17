@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded',function(){
         if(this.value.length>3){
 
             var xhr = new XMLHttpRequest();
-            xhr.open('get','http://localhost/commande/api/getSearchSocieteByNom/?nom='+ this.value);
+            xhr.open('get',window.location.origin+'/commande/api/getSearchSocieteByNom/?nom='+ this.value);
             xhr.responseType = 'json';
             xhr.onload = function(){
                 var data = '<ul style="list-style:none; text-align:left" >';

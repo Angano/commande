@@ -6,11 +6,11 @@ ob_start();
 <div class="row py-1 pb-3 d-flex">
         <div class="col-md-6 mx-auto">
             <h3>Listes des commandes</h3>
-        </div>
+        </div>      
         <div class="col-md-5 mx-auto align-self-center">
             <form class="d-flex" role="search" method="POST" action="<?= URLROOT?>/commande/commande">
-                <input type="hidden" name="soc" value="" id="societe">
-                <input value ="" class="form-control me-2" id="search" name=search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+                <input type="hidden" name="soc" value="<?= $datas['dataForForm']['rowid'] ?>" id="societe">
+                <input value ="<?= $datas['dataForForm']['nom'] ?>" class="form-control me-2" id="search" name=search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
