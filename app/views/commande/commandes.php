@@ -2,13 +2,24 @@
 $titlePage = 'Document';
 ob_start();
 ?>
-<div class="row py-1 pb-3">
-        <div class="col-md-11 mx-auto">
+<div id="resultat"></div>
+<div class="row py-1 pb-3 d-flex">
+        <div class="col-md-6 mx-auto">
             <h3>Listes des commandes</h3>
         </div>
+        <div class="col-md-5 mx-auto align-self-center">
+            <form class="d-flex" role="search" method="POST" action="<?= URLROOT?>/commande/commande">
+                <input type="hidden" name="soc" value="" id="societe">
+                <input value ="" class="form-control me-2" id="search" name=search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+        
 </div>
-<?php
+<div id="tutu">
 
+
+<?php
 foreach($datas['commandes'] as $commande){
     ?>
 
@@ -75,36 +86,44 @@ foreach($datas['commandes'] as $commande){
                 if(intval($datas['shorTable']['offset'])>intval($datas['shorTable']['limit'])){ ?>
                 
                     <li class="page-item"><a class="page-link" href="
-                    <?=  URLROOT.'/commande/index/?limit='.'30'.'&offset='.(intval($datas['shorTable']['offset'])-intval($datas['shorTable']['limit'])).'"' ?>
+                    <?=  URLROOT.'/commande/index/?limit='.'30'.'&offset='.(intval($datas['shorTable']['offset'])-intval($datas['shorTable']['limit'])).'&soc='.$datas['shorTable']['soc'].'"' ?>
                     ">Précédent</a></li><?php 
                 } ?>
                 <?php
-              
+                $max = intval($datas['shorTable']['offset']+intval($datas['shorTable']['limit']));
+                $min = intval($datas['shorTable']['offset']);
+             
                     $url = '';
-                
-                        for ($i=10; $i<intval($datas['count']); $i= $i+30){ 
+                        for ($i=0; $i<intval($datas['count']); $i= $i+intval($datas['shorTable']['limit'])){ 
                                 $url = $url . '<li class="page-item">';
-
-                                if($datas['shorTable']['offset']==$i){
+                     
+                               
+                                if( $i>=$min &&  $i<$max){
                                    
                                     $url = $url . '<a class="page-link active" >'.($i).'</a>';
 
-                                }else{
-                                    $url = $url . '<a class="page-link" href="'.URLROOT.'/commande/index/?limit='.'30'.'&offset='.$i.'">'.($i).'</a>';
+                                }elseif($i!==0){
+                                    $url = $url . '<a class="page-link" href="'.URLROOT.'/commande/index/?limit='.'30'.'&offset='.$i.'&soc='.$datas['shorTable']['soc'].'">'.($i).'</a>';
                                 }
                                 $url = $url."</li>";
                         }
                     ?>
                     <?= $url ?>
-                    <?php if(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit'])<intval($datas['count'])){ ?>
-                                        <li class="page-item"><a class="page-link" href="<?=  URLROOT.'/commande/index/?limit='.'30'.'&offset='.(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit'])).'"' ?>">Suivant</a></li>
+                    <?php if(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit']) < intval($datas['count'])){ ?>
+                                        <li class="page-item"><a class="page-link" href="<?=  URLROOT.'/commande/index/?limit='.$datas['shorTable']['limit'].'&offset='.(intval($datas['shorTable']['offset'])+intval($datas['shorTable']['limit'])).'&soc='.$datas['shorTable']['soc'].'"' ?>">Suivant</a></li>
 
                     <?php }
                     ?>
             </ul>
         </nav>
     </div>
-</div>        
+</div> 
+                    </div>       
 <?php
     $content = ob_get_clean();
+    ob_start();
+    ?>
+    <script src="<?=URLROOT?>/public/assets/js/commandes.js"></script>
+<?php
+    $script=ob_get_clean();
     require('../app/views/base.php');

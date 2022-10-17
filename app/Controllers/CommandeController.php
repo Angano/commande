@@ -1,15 +1,39 @@
 <?php
 class Commande extends Controller{
 
-    public function index($shortTable){
-       
+    public function index($shorTable){
+
+        // pour la recherche par entreprise on récolte la data du formulaire
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            $shorTable['soc']=$_POST['soc'];
+        }
+        // Vérification du format reçu de $shorTable
+        if(!is_array($shorTable)){
+            $shorTable = array();
+        }
+        if(!isset($shorTable['limit']) || preg_match('/^[1-9][0-9]{0,}$/',$shorTable['limit'])===0){
+
+          $shorTable['limit'] = 5 ;
+        }
+        if(!isset($shorTable['offset']) || preg_match('/^[1-9][0-9]{0,}$/',$shorTable['offset'])===0){
+
+            $shorTable['offset'] = 0;
+        }
+        if(!isset($shorTable['soc']) || preg_match('/^[1-9][0-9]{0,}$/',$shorTable['soc'])===0){
+
+            $shorTable['soc'] = null;
+        }
+    
+        // fin de vérification
+      
+
         $model = $this->model('CommandeModel');
-        $commandes = $model->getCommandes($shortTable);
-        $count = $model->countCommande();
+        $commandes = $model->getCommandes($shorTable);
+        $count = $model->countCommande($shorTable['soc']);
         $datas = array(
             'commandes'=>$commandes,
             'count'=>$count['count'],
-            'shorTable'=>$shortTable
+            'shorTable'=>$shorTable
         );
         $this->view('commande/commandes',$datas);
 

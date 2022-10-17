@@ -6,9 +6,9 @@
           
          
         }
-        public function getCommandes($datas = ['limit'=>'30','offset'=>'0']){
+        public function getCommandes($datas = ['limit'=>'5','offset'=>'0']){
             if(!isset($datas['limit'])){
-                $datas = ['limit'=>'30','offset'=>'0'];
+                $datas = ['limit'=>'5','offset'=>'0'];
             }
             $sql =  " SELECT DISTINCT llx_commande.rowid, llx_commande.fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut, todo, 
@@ -17,13 +17,24 @@
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
             LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
-            LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid)
-            LIMIT :limit OFFSET :offset 
-            ";
+            LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid)";
+
+            if(isset($datas['soc']) && is_numeric($datas['soc'])){
+                            $sql = $sql . ' WHERE llx_commande.fk_soc=:soc ';
+                            $soc = intval($datas['soc']);
+                        }
+
+            $sql = $sql. " LIMIT :limit OFFSET :offset "; 
+            
            
             $query = $this->db->prepare($sql);
             $query->bindValue(':limit',$datas['limit'],PDO::PARAM_INT);
             $query->bindValue(':offset',$datas['offset'],PDO::PARAM_INT);
+        
+            if(isset($datas['soc']) && is_numeric($datas['soc'])){
+                $query->bindValue(':soc',$soc,PDO::PARAM_INT);
+             
+            }
             $query->execute();
             $resultats = $query->fetchAll();
 
@@ -65,6 +76,25 @@
             return $query->fetchAll();
         }
         
+        public function getSearchSocieteByNom($soc){
+       
+            $sql = " SELECT DISTINCT llx_societe.rowid, llx_societe.nom,llx_societe.address, 
+            llx_societe.zip, llx_societe.town
+            FROM llx_commande
+            LEFT JOIN llx_societe ON(llx_societe.rowid=llx_commande.fk_soc)
+            WHERE llx_societe.nom like :nom
+            LIMIT 10";
+
+            $query = $this->db->prepare($sql);
+            $query->bindValue(':nom','%'.$soc.'%');
+            $query->execute();
+           
+            $resultat = $query->fetchAll();
+
+            return $resultat;
+        }
+
+
         public function updateStatusCommande($datas){
 
             $sql = "UPDATE llx_commande 
@@ -80,9 +110,23 @@
 
         }
 
-        public function countCommande(){
-            $sql = "SELECT count(rowid) as count FROM llx_commande";
-            $query = $this->db->query($sql);
+        public function countCommande($data=''){
+
+            $sql = " SELECT count(rowid) as count FROM llx_commande ";
+
+            if(isset($data) && is_numeric($data)){
+                $soc = intval($data);
+                $sql = $sql." WHERE fk_soc=:soc ";
+            }
+            $query = $this->db->prepare($sql);
+          
+
+            if(isset($soc) && is_numeric($soc)){
+                $query->bindValue(':soc',$soc,PDO::PARAM_INT);
+            }
+
+            $query->execute();
+
             return $query->fetch();
         }
 

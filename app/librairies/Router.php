@@ -49,9 +49,13 @@ class Router{
         // on exploite l'argument si il est présent
 
         if(isset($this->url[2])){
-
+            // var_dump(preg_match('/(^\?\w{1,}=\w{1,}){1}$|(^\?\w{1,}=\w{1,}&(\w{1,}=\w{1,}))/ ', $this->url[2]));
+            // echo '<br>';
+            //  var_dump($this->url[2]);
+            //  echo '<br>';
+         
             // on recherche dans l'url un composante ?key=value&key2=value2
-            if(preg_match('/^\?/',$this->url[2])){
+            if(preg_match('/(^\?\w{1,}=\w{1,}){1}$|(^\?\w{1,}=\w{1,}&(\w{1,}=\w{1,}))/ ', $this->url[2])){
                 $toto= explode('&',preg_replace('/\?/','',$this->url[2]));
                 $options = [];
                 foreach($toto as $key=>$value){
@@ -59,15 +63,19 @@ class Router{
                     $options[$tab[0]] = $tab[1];
                 }
 
+           
             // on revoie un tableau
               $this->argument = $options;
+         
+           
             }else{
+             
                 $this->argument = $this->url[2];
             }
             
-            
-        }else{
           
+        }else{
+   
             $this->argument = null;
         }
         
