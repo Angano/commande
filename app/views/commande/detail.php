@@ -1,5 +1,5 @@
 <?php
-$titlePage = 'Document';
+$titlePage = 'Commande N°: '.$datas['commande']['ref'];
 ob_start();
 ?>
 
@@ -36,20 +36,31 @@ ob_start();
                     
                     
                     
-                    ?></p>
+                    ?>
+                    <form action="https://google.com/maps//dir" method="get" >
+
+                    
+                    </form><button class="btn btn-sm btn-primary ">G.P.S</button></p>
+                    <p><?=$datas['commande']['latitude'] ?> <?= $datas['commande']['longitude'] ?></p>
+                    
         
     </div>
     <div class="card  col-12 col-md-5 offset-md-1 me-auto px-0" >
         <?php if(isset($datas['commande']['todo']) && strlen($datas['commande']['todo'])>1){ ?>
         
         <div class="card-header">
-            <b>Todo:</b>
+            <p><b>Todo:</b></p>
         </div>
         <div class="card-body">
             <?=$datas['commande']['todo']?>
         </div>
-        <div class="card-footer">
-            <a href="<?=URLROOT?>/commande/AddTodo/<?=$datas['commande']['rowid']?>" class="btn btn-sm btn-primary">Update !</a>
+        <div class="card-footer d-flex justify-content-between">
+            <div>
+               <b><?= $datas['commande']['firstname']?>- <?= $datas['commande']['lastname']?></b>&nbsp;le :<?= $datas['commande']['created_at']?>   
+            </div>
+            <div>
+                <a href="<?=URLROOT?>/commande/AddTodo/<?=$datas['commande']['rowid']?>" class="btn btn-sm btn-primary">Update !</a> 
+            </div>
         </div>
             <?php } else { ?>
         
@@ -96,7 +107,7 @@ ob_start();
             </div>
 
     </div>
-
+<?php if(count($datas['commandes'])>0){ ?>
     <div class="row pb-3">
             <div class="col-md-11 mx-auto mt-3">
                 <h4>Egalement pour ce client</h4>
@@ -108,10 +119,6 @@ ob_start();
                 <div class="row  mx-auto alternate_color col-12 col-sm-11 my-2 justify-content-end">
                     <div class="col-12 d-flex justify-content-between">
                         <div>
-
-
-
-                        
                         <a href="<?= URLROOT?>/commande/detail/<?= $commande['rowid']?>" ><?= $commande['ref'] ?></a><small class="ms-2">
                             <?php 
                             switch($commande['fk_statut']){
@@ -141,25 +148,25 @@ ob_start();
                             }?>
 </div>
                         <div  class=" d-flex justify-content-end my-2 ">
-                                                <div class="me-2">
-                                                    <label for="com_1<?= $commande['rowid']?>"><small><b><i class="fa-solid fa-check"></i></b> </small> </label>
-                                                    <input 
-                                                        type="radio" 
-                                                        name="valid_commande[<?= $commande['rowid']?>]" 
-                                                        id="com_1<?= $commande['rowid']?>" 
-                                                        value="3" <?php if($commande['fk_statut']==3){ ?>
-                                                        checked <?php } ?>>
-                                                </div>
-                                                <div class="ms-2">
-                                                    <label for="com_<?= $commande['rowid']?>"><small><b><i class="fa-solid fa-xmark"></i></b> </small> </label>
-                                                    <input  
-                                                        type="radio" 
-                                                        name="valid_commande[<?= $commande['rowid']?>]" 
-                                                        id="com_<?= $commande['rowid']?>" 
-                                                        value="2" <?php if($commande['fk_statut']==2){ ?>
-                                                        checked <?php } ?>>
-                                                </div>
-                                            </div>
+                            <div class="me-2">
+                                <label for="com_1<?= $commande['rowid']?>"><small><b><i class="fa-solid fa-check"></i></b> </small> </label>
+                                <input 
+                                    type="radio" 
+                                    name="valid_commande[<?= $commande['rowid']?>]" 
+                                    id="com_1<?= $commande['rowid']?>" 
+                                    value="3" <?php if($commande['fk_statut']==3){ ?>
+                                    checked <?php } ?>>
+                            </div>
+                            <div class="ms-2">
+                                <label for="com_<?= $commande['rowid']?>"><small><b><i class="fa-solid fa-xmark"></i></b> </small> </label>
+                                <input  
+                                    type="radio" 
+                                    name="valid_commande[<?= $commande['rowid']?>]" 
+                                    id="com_<?= $commande['rowid']?>" 
+                                    value="2" <?php if($commande['fk_statut']==2){ ?>
+                                    checked <?php } ?>>
+                            </div>
+                        </div>
 
                     </div>
                     
@@ -170,7 +177,7 @@ ob_start();
                 </div><?php 
             }
         
-        } ?>
+        } }?>
     <div class="row mt-5 ">
         <div class="col-11 mx-auto p-0 d-flex justify-content-end">
             <div>
@@ -182,6 +189,7 @@ ob_start();
   
     </div>
 </form>
+<?php if($datas['commandes']){?>}
 <div class="row mt-3 py-3">
     <div class="col-md-11 mx-auto">
         <h4>Livraison en attente dans un rayon de <?= $datas['limite']?> km pour d'autre client</h4>
@@ -242,7 +250,7 @@ ob_start();
     </div>
 
 <?php 
-        }
+        }}
     
     }
     

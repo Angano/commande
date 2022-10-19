@@ -1,5 +1,5 @@
 <?php
-$titlePage = 'Document';
+$titlePage = 'Liste des commandes';
 ob_start();
 ?>
 <div id="resultat"></div>

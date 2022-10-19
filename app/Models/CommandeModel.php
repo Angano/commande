@@ -3,9 +3,8 @@
        
         public function __construct(){
             parent::__construct();
-          
-         
         }
+        
         public function getCommandes($datas = ['limit'=>'30','offset'=>'0']){
             if(!isset($datas['limit'])){
                 $datas = ['limit'=>'30','offset'=>'0'];
@@ -14,10 +13,11 @@
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut, todo, 
             md_todo_with_delivery.id as todoId, 
             cityCode, nameCity, postCode, latitude, longitude
+         
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
             LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
-            LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid)";
+            LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid) ";
 
             if(isset($datas['soc']) && is_numeric($datas['soc'])){
                             $sql = $sql . ' WHERE llx_commande.fk_soc=:soc ';
@@ -45,11 +45,13 @@
 
             $sql = " SELECT llx_commande.rowid, llx_commande.fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut , md_todo_with_delivery.todo , 
-            md_todo_with_delivery.id as todoId, latitude, longitude
+            md_todo_with_delivery.id as todoId, latitude, longitude,
+            md_todo_with_delivery.created_at, llx_user.firstname, llx_user.lastname
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
             LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
             LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid)
+            LEFT JOIN llx_user ON(llx_user.rowid=md_todo_with_delivery.fk_user)
             WHERE llx_commande.rowid=:id";
 
             $query = $this->db->prepare($sql);

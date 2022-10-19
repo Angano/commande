@@ -49,6 +49,7 @@
 
 
     <script src="<?=URLROOT?>/public/assets/js/bootstrap/bootstrap.bundle.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
@@ -56,7 +57,8 @@
 
     </script>
     
-    
+        <script src="<?=URLROOT?>/public/assets/js/base.js"></script>
+
     <!-- Chargement des scripts -->
     <?php
         if(isset($script)){

@@ -7,8 +7,35 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="navbar-nav">
                  <li class="nav-item ">
-                                    <a href="<?=URLROOT?>/commandes" class="nav-link">Commandes</a>
-                                </li>
+                    <a href="<?=URLROOT?>/commandes" class="nav-link">Commandes</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="/<?php $_SERVER['REQUEST_SCHEME'].$_SERVER['HTTP_HOST']?>centrex/md/home" target="_blank" class="nav-link">Centrex</a>
+                </li>
+                <li class="nav-item ">
+                    <a href="<?=URLROOT?>/admin" target="_blank" class="nav-link">Admin</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+           
+                <?php
+                if(true){ ?>
+                    
+                    <li class="nav-item">
+                        <a  data-bs-toggle="modal" data-bs-target="#get-profil" class="nav-link" href="#"><i class="fa fa-user" aria-hidden="true"></i>
+                  </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Logout</a>
+                    </li>
+                <?php }
+                else{ ?>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="">login</a>
+                    </li>
+                 
+                <?php } ?>
             </ul>
      
 

@@ -1,6 +1,14 @@
 <?php
 class Commande extends Controller{
 
+    public function __construct(){
+        $model = $this->model('UserModel');
+        $user = $model->getCurrentUser();
+        if($user['actif']!=="1"){
+            header('Location:'.$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/centrex/md/home');
+            die;
+        }
+    }
     public function index($shorTable){
 
         // pour la recherche par entreprise on récolte la data du formulaire
@@ -25,9 +33,6 @@ class Commande extends Controller{
         }
     
         // fin de vérification
-
-       
-      
 
         $model = $this->model('CommandeModel');
         $commandes = $model->getCommandes($shorTable);
@@ -86,7 +91,8 @@ class Commande extends Controller{
 
         ///////////////////////////////////////////////////////////////
         $limite = 35;
-        
+ 
+        // Suppression du tableau commandes des entrées dont la distance est supérieure à $limite
         foreach($commandes as $key=>$data){
             if(isset($data['nameCity']) && !empty($data['nameCity'])){
                 
@@ -96,30 +102,34 @@ class Commande extends Controller{
                 }else{
                      $commandes[$key]['distance'] = intval(distance($commande['latitude'],$commande['longitude'],$data['latitude'], $data['longitude']));
                 }
-               
-               
-              
-           
             }
-           
         }
-        foreach ($commandes as $key => $row)
-        {
-            if(isset($row['distance']) && !empty($row['distance'])){
-                $wek[$key]  = $row['distance'];
-            }else{
-                $wek[$key] ='';
-            }
-            
-        }    
+        if(count($commandes)>0){
+            foreach ($commandes as $key => $row)
+                    {
+                        if(isset($row['distance']) && !empty($row['distance'])){
+                            $wek[$key]  = $row['distance'];
+                        }else{
+                            $wek[$key] ='';
+                        }
+                        
+                    }    
+                    
+                    // Sort the data with wek ascending order, add $mar as the last parameter, to sort by the common key
+                    array_multisort($wek, SORT_ASC, $commandes);
+
+        }
+      
+     
         
-        // Sort the data with wek ascending order, add $mar as the last parameter, to sort by the common key
-        array_multisort($wek, SORT_ASC, $commandes);
 
         //////////////////////////////////////////////////////////////
         $datas = array(
+            // la commande à détailler
             'commande'=>$commande,
+            // Les commandes de société
             'commandesBySoc'=>$commandesBySoc,
+            // Toutes les commandes
             'commandes'=>$commandes,
             'limite'=>$limite
         );
@@ -135,7 +145,7 @@ class Commande extends Controller{
             $datas = array(
                 'todo'=>$_POST['todo'],
                 'fk_command'=>$_POST['commande_id'],
-                'fk_user'=>66,
+                'fk_user'=>$_SESSION['user_id'],
                 'created_at'=> date('Y-m-d H:i:s'),
                 'todoId'=>$commande['todoId']
             );

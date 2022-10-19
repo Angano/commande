@@ -25,16 +25,13 @@ window.addEventListener('DOMContentLoaded',function(){
 // détermination de l'url de base
 
 var url = window.location.pathname.split('/');
-var index = url.indexOf('centrex')+1;
-var pathname = '';
+var index = url.indexOf('commande')+1;
+var pathname = 'commande/api/getCurrentUser/';
 
-for(var i=1; i<=index; i++){
-    pathname = pathname+url[i]+'/';
-}
 
 // construction de l'url complète
 url = window.location.protocol+'//'+window.location.host+'/'+pathname;
-
+console.log(url);
 
 function getCurrentUser(id){
     
@@ -44,7 +41,7 @@ function getCurrentUser(id){
     xhr.responseType = 'json';
 
     xhr.onload = function(){
-        
+            console.log(this.response)
         $('#current-civility').html(this.response.civility);
         $('#current-lastname').html(this.response.lastname);
         $('#current-firstname').html(this.response.firstname);
@@ -54,7 +51,7 @@ function getCurrentUser(id){
         $('#current-zip').html(this.response.zip);
         $('#current-town').html(this.response.town);
         $('#current-soc').html(this.response.nom);
-        $('#current-job').html(this.response.job);
+        $('#current-job').html(this.response.intitule);
     }
 
     xhr.send();

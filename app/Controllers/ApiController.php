@@ -11,4 +11,15 @@ class Api extends Controller{
         }
       
     }
+
+    public function getCurrentUser(){
+        
+       $model = $this->model('UserModel');
+       $curentUser = $model->getCurrentUser();
+
+       header("Content-Type: application/json");
+       echo json_encode($curentUser);
+       exit;
+
+    }
 }
