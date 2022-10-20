@@ -46,12 +46,15 @@
             $sql = " SELECT llx_commande.rowid, llx_commande.fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut , md_todo_with_delivery.todo , 
             md_todo_with_delivery.id as todoId, latitude, longitude,
-            md_todo_with_delivery.created_at, llx_user.firstname, llx_user.lastname
+            md_todo_with_delivery.created_at, llx_user.firstname, llx_user.lastname,
+            livreur.firstname as livreur_firstname, livreur.lastname as livreur_lastname, livraison.delivery_at
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
             LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
             LEFT JOIN md_gps_soc ON(md_gps_soc.fk_soc=llx_societe.rowid)
             LEFT JOIN llx_user ON(llx_user.rowid=md_todo_with_delivery.fk_user)
+            LEFT JOIN md_delivery AS livraison ON(livraison.fk_commande=llx_commande.rowid)
+            LEFT JOIN llx_user AS livreur ON(livreur.rowid=livraison.fk_user)
             WHERE llx_commande.rowid=:id";
 
             $query = $this->db->prepare($sql);
@@ -64,11 +67,15 @@
         }
 
         public function commandeBySoc($soc){
-            $sql = " SELECT llx_commande.rowid, fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
-            llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut , todo , md_todo_with_delivery.id as todoId
+            $sql = " SELECT llx_commande.rowid, llx_commande.fk_soc ,llx_societe.rowid, llx_societe.nom,llx_societe.address, 
+            llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut , todo , md_todo_with_delivery.id as todoId,
+            livreur.firstname, livreur.lastname, livraison.delivery_at, livraison.status
+            
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
-            LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
+            LEFT JOIN md_todo_with_delivery  ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
+            LEFT JOIN md_delivery AS livraison ON(livraison.fk_commande=llx_commande.rowid)
+            LEFT JOIN llx_user AS livreur ON(livreur.rowid=livraison.fk_user)
             WHERE llx_commande.fk_soc=:soc ";
 
             $query = $this->db->prepare($sql);
@@ -168,6 +175,49 @@
             $query->bindValue(':fk_user', $datas['fk_user'], PDO::PARAM_STR);
             $query->bindValue(':created_at', $datas['created_at'], PDO::PARAM_STR);
 
+            $query->execute();
+        }
+
+        public function addDeliveryBy($datas){
+            
+            $sql = " INSERT INTO md_delivery(fk_user,fk_commande,delivery_at)
+            values(:fk_user, :fk_commande, :delivery_at) ";
+
+            $query = $this->db->prepare($sql);
+
+            $query->bindValue(':fk_user',$datas['fk_user'],PDO::PARAM_INT);
+            $query->bindValue(':fk_commande',$datas['fk_commande'], PDO::PARAM_INT);
+            $query->bindValue(':delivery_at',$datas['delivery_at'],PDO::PARAM_STR);
+
+            $query->execute();
+        }
+
+        public function getDeliveryByCommande($fk_commande){
+            
+            $sql = " SELECT * FROM md_delivery 
+                WHERE fk_commande=:fk_commande";
+
+            $query = $this->db->prepare($sql);
+
+            $query->bindValue(':fk_commande',$fk_commande,PDO::PARAM_STR);
+            $query->execute();
+
+            return $query->fetch();
+            
+        }
+
+        public function updateDelivery($datas){
+            $sql = " UPDATE md_delivery
+                SET fk_user=:fk_user, delivery_at=:delivery_at, status=:status
+                WHERE fk_commande=:fk_commande";
+
+            $query = $this->db->prepare($sql);
+
+            $query->bindValue(':fk_user',$datas['fk_user'],PDO::PARAM_STR);
+            $query->bindValue(':fk_commande',$datas['fk_commande'], PDO::PARAM_INT);
+            $query->bindValue(':delivery_at',$datas['delivery_at'], PDO::PARAM_STR);
+            $query->bindValue(':status',$datas['status'], PDO::PARAM_INT);
+            
             $query->execute();
         }
 }

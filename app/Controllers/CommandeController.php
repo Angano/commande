@@ -9,6 +9,7 @@ class Commande extends Controller{
             die;
         }
     }
+    
     public function index($shorTable){
 
         // pour la recherche par entreprise on récolte la data du formulaire
@@ -61,13 +62,11 @@ class Commande extends Controller{
                 ];
         }
 
-
-        
         $this->view('commande/commandes',$datas);
 
     }
 
-
+    // Détail et mise à jour si livraison effectué
     public function detail($id){
         $model = $this->model('CommandeModel');
 
@@ -79,7 +78,39 @@ class Commande extends Controller{
                     'fk_statut'=>$value,
                     'rowid'=>$key
                 );
+
+
+
+             
+                $datasDelivery = [
+                    'fk_user'=>$_SESSION['user_id'],
+                    'fk_commande'=>$key,
+                    'delivery_at'=>date('Y-m-d H:i:s')
+                ];
+
+                // détermination du statut de la livraison
+                if($value!=='3'){
+                    $datasDelivery['status']=0;
+                }else{
+                    $datasDelivery['status']=1;
+                }
+
+
                 $model->updateStatusCommande($dataPost);
+
+                // on vérifue présence d'un enregistrement avec le numero de commande
+                // soit on insert, soit on met à jour
+                $commande = $model->getDeliveryByCommande($key);
+                if($commande===false){
+                    $model->addDeliveryBy($datasDelivery);
+                }else{
+
+                    $model->updateDelivery($datasDelivery);
+                }
+
+
+                
+
             }
             
         }

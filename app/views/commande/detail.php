@@ -29,19 +29,17 @@ ob_start();
                             break;
 
                         case 3:
-                            echo 'Livrée';
+                            echo 'Livrée par: <b>'.$datas['commande']['livreur_firstname'].'-'. $datas['commande']['livreur_lastname'].'</b>, le: <b>'.$datas['commande']['delivery_at'].'</b>';
                             break;
 
                     }
-                    
-                    
                     
                     ?>
                     <form action="https://google.com/maps//dir" method="get" >
 
                     
                     </form><button class="btn btn-sm btn-primary ">G.P.S</button></p>
-                    <p><?=$datas['commande']['latitude'] ?> <?= $datas['commande']['longitude'] ?></p>
+                    
                     
         
     </div>
@@ -107,46 +105,58 @@ ob_start();
             </div>
 
     </div>
-<?php if(count($datas['commandes'])>0){ ?>
+<?php if(count($datas['commandes'])>0){ 
+    
+     var_dump($datas['commande']);
+    ?>
+   
     <div class="row pb-3">
             <div class="col-md-11 mx-auto mt-3">
                 <h4>Egalement pour ce client</h4>
+                <span class="btn btn-sm btn-primary" id="showCommandes">Show</span>
             </div>
     </div>
+    <div id="display_commandes" style="display:none">
+
+
+    
+  
     <?php
         foreach($datas['commandesBySoc'] as $commande){
             if($commande['ref']!==$datas['commande']['ref']){ ?>
                 <div class="row  mx-auto alternate_color col-12 col-sm-11 my-2 justify-content-end">
                     <div class="col-12 d-flex justify-content-between">
                         <div>
-                        <a href="<?= URLROOT?>/commande/detail/<?= $commande['rowid']?>" ><?= $commande['ref'] ?></a><small class="ms-2">
-                            <?php 
-                            switch($commande['fk_statut']){
-                                case 0:
-                                    echo ' 0';
-                                    break;
-                                
-                                case 1:
-                                    echo 'En préparation';
-                                    break;
+                            <a href="<?= URLROOT?>/commande/detail/<?= $commande['rowid']?>" ><?= $commande['ref'] ?></a>
+                            <small class="ms-2">
+                                <?php 
+                                switch($commande['fk_statut']){
+                                    case 0:
+                                        echo ' 0';
+                                        break;
+                                    
+                                    case 1:
+                                        echo 'En préparation';
+                                        break;
 
-                                case 2:
-                                    echo 'A livrer';
-                                    break;
+                                    case 2:
+                                        echo 'A livrer';
+                                        break;
 
-                                case 3:
-                                    echo 'Livrée';
-                                    break;
-                            }
-                            ?>
-                        </small>
-                         <?php if(isset($commande['todo']) ){ ?>
-                     
-                            <span type="button" class="btn btn-sm btn-primary ms-4" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="<?=$commande['todo'] ?>">Todo !</span>
+                                    case 3:
+                                        echo 'Livrée';
+                                        break;   }             ?>
+                            </small>
+                            <?php if(isset($commande['todo']) ){ ?>
                         
-                        <?php
-                            }?>
-</div>
+                                <span type="button" class="btn btn-sm btn-primary ms-4" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="<?=$commande['todo'] ?>">Todo !</span>
+                            
+                            <?php
+                                }?>
+
+                        </div>
+
+
                         <div  class=" d-flex justify-content-end my-2 ">
                             <div class="me-2">
                                 <label for="com_1<?= $commande['rowid']?>"><small><b><i class="fa-solid fa-check"></i></b> </small> </label>
@@ -168,16 +178,10 @@ ob_start();
                             </div>
                         </div>
 
-                    </div>
-                    
-                  
-                   
-                        
-                  
-                </div><?php 
-            }
-        
-        } }?>
+                    </div>              
+                </div>
+                <?php  }  } }?>
+                                    </div>
     <div class="row mt-5 ">
         <div class="col-11 mx-auto p-0 d-flex justify-content-end">
             <div>
@@ -261,5 +265,11 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
+
+ob_start();
+?>
+<script src="<?=URLROOT?>/public/assets/js/detail.js"></script>
+<?php
+$script=ob_get_clean();
 
 require('../app/views/base.php');
