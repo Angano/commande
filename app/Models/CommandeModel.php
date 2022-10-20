@@ -47,7 +47,7 @@
             llx_societe.zip, llx_societe.town,  llx_commande.rowid, llx_commande.ref, llx_commande.fk_statut , md_todo_with_delivery.todo , 
             md_todo_with_delivery.id as todoId, latitude, longitude,
             md_todo_with_delivery.created_at, llx_user.firstname, llx_user.lastname,
-            livreur.firstname as livreur_firstname, livreur.lastname as livreur_lastname, livraison.delivery_at
+            livreur.firstname as livreur_firstname, livreur.lastname as livreur_lastname, livraison.delivery_at, livraison.status AS livraison_status
             FROM llx_commande
             INNER join llx_societe on(llx_commande.fk_soc=llx_societe.rowid)
             LEFT JOIN md_todo_with_delivery ON(llx_commande.rowid=md_todo_with_delivery.fk_command)
