@@ -10,7 +10,7 @@
                     <a href="<?=URLROOT?>/commandes" class="nav-link">Commandes</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="/<?php $_SERVER['REQUEST_SCHEME'].$_SERVER['HTTP_HOST']?>centrex/md/home" target="_blank" class="nav-link">Centrex</a>
+                    <a href="/<?php $_SERVER['REQUEST_SCHEME'].$_SERVER['HTTP_HOST']?>centrex/home/login" target="_blank" class="nav-link">Centrex</a>
                 </li>
                 <li class="nav-item ">
                     <a href="<?=URLROOT?>/admin" target="_blank" class="nav-link">Admin</a>
@@ -27,7 +27,7 @@
                   </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Logout</a>
+                        <a class="nav-link" href="/<?php $_SERVER['REQUEST_SCHEME'].$_SERVER['HTTP_HOST']?>commande/security/logout">Logout</a>
                     </li>
                 <?php }
                 else{ ?>

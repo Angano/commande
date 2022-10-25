@@ -5,7 +5,8 @@ class Commande extends Controller{
         $model = $this->model('UserModel');
         $user = $model->getCurrentUser();
         if($user['actif']!=="1"){
-            header('Location:'.$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/centrex/md/home');
+
+            header('Location:'.$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/centrex/home/login');
             die;
         }
     }
